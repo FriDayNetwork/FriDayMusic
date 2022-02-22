@@ -49,8 +49,8 @@ Make your own bot using below source code.
 START_BUTTONS = InlineKeyboardMarkup(
     [
         [
-            InlineKeyboardButton("Nᴇᴛᴡᴏʀᴋ", url="https://t.me/JaguarBots"),
-            InlineKeyboardButton("Sᴏᴜʀᴄᴇ", url="https://github.com/ImJanindu/47MusicPlayerBot")
+            InlineKeyboardButton("Nᴇᴛᴡᴏʀᴋ", url="https://t.me/FriDayNetwork"),
+            InlineKeyboardButton("Sᴏᴜʀᴄᴇ", url="https://github.com/FriDayNetwork/FriDayMusic")
         ]
     ]
 )
@@ -61,12 +61,12 @@ BUTTONS = InlineKeyboardMarkup(
             InlineKeyboardButton("⏯", callback_data="pause"),
             InlineKeyboardButton("‣", callback_data="resume"),
             InlineKeyboardButton("⏭", callback_data="skip"),
-            InlineKeyboardButton("♺", callback_data="stop"),
+            InlineKeyboardButton("≠", callback_data="stop"),
             InlineKeyboardButton("⌧", callback_data="mute"),
             InlineKeyboardButton("❚❚", callback_data="unmute")
         ],
         [
-            InlineKeyboardButton("🗑 Close Menu", callback_data="close")
+            InlineKeyboardButton("⋉ Cʟᴏꜱᴇ ⋊", callback_data="close")
         ]
     ]
 )
@@ -107,7 +107,7 @@ async def skip_current_song(chat_id):
                 )
             pop_an_item(chat_id)
             await bot.send_photo(chat_id, photo = thumb,
-                                 caption = f"▶️ <b>Now playing:</b> [{title}]({link}) | `{type}` \n\n⏳ <b>Duration:</b> {duration}",
+                                 caption = f"‣ <b>Now Playing:</b> [{title}]({link}) | `{type}` \n\n ♺<b>Duration:</b> {duration}",
                                  reply_markup = BUTTONS)
             return [title, link, type, duration, thumb]
     else:
@@ -265,7 +265,7 @@ async def video_play(_, message):
     if chat_id in LIVE_CHATS:
         return await message.reply_text("❗️Please send <code>/stop</code> to end current live streaming before play songs or videos.")
     
-    m = await message.reply_text("🔄 Processing...")
+    m = await message.reply_text("⥂ Processing...")
     if state == "play":
         damn = AudioPiped
         ded = yt_audio
@@ -288,7 +288,7 @@ async def video_play(_, message):
         thumb = results[0]["thumbnails"][0]
         duration = results[0]["duration"]
         yt = YouTube(link)
-        cap = f"▶️ <b>Now playing:</b> [{yt.title}]({link}) | `{doom}` \n\n⏳ <b>Duration:</b> {duration}"
+        cap = f"‣ <b>Now playing:</b> [{yt.title}]({link}) | `{doom}` \n\n♺ <b>Duration:</b> {duration}"
         try:
             ydl_opts = {"format": "bestvideo[height<=720]+bestaudio/best[height<=720]"}
             ydl = youtube_dl.YoutubeDL(ydl_opts)
@@ -306,7 +306,7 @@ async def video_play(_, message):
     try:
         if chat_id in QUEUE:
             position = add_to_queue(chat_id, yt.title, duration, link, playlink, doom, Q, thumb)
-            caps = f"#️⃣ [{yt.title}]({link}) <b>queued at position {position}</b> \n\n⏳ <b>Duration:</b> {duration}"
+            caps = f"♯ [{yt.title}]({link}) <b>queued at position {position}</b> \n\n⏳ <b>Duration:</b> {duration}"
             await message.reply_photo(thumb, caption=caps)
             await m.delete()
         else:            
@@ -339,7 +339,7 @@ async def stream_func(_, message):
     elif state == "svideo":
         damn = AudioVideoPiped
         emj = "🎬"
-    m = await message.reply_text("🔄 Processing...")
+    m = await message.reply_text("♺ Processing...")
     try:
         if chat_id in QUEUE:
             return await m.edit("❗️Please send <code>/stop</code> to end voice chat before live streaming.")
@@ -385,7 +385,7 @@ async def skip(_, message):
                     if hm == 0:
                         pass
                     else:
-                        out = out + "\n" + f"<b>#️⃣ {x}</b> - {hm}"
+                        out = out + "\n" + f"<b>♯ {x}</b> - {hm}"
             await message.reply_text(out)
             
             
@@ -398,17 +398,17 @@ async def playlist(_, message):
         if len(chat_queue) == 1:
             await message.delete()
             await message.reply_text(
-                f"▶️ <b>Now playing:</b> [{chat_queue[0][0]}]({chat_queue[0][2]}) | `{chat_queue[0][4]}`",
+                f"‣ <b>Now playing:</b> [{chat_queue[0][0]}]({chat_queue[0][2]}) | `{chat_queue[0][4]}`",
                 disable_web_page_preview=True,
             )
         else:
-            out = f"<b>📃 Player queue:</b> \n\n▶️ <b>Now playing:</b> [{chat_queue[0][0]}]({chat_queue[0][2]}) | `{chat_queue[0][4]}` \n"
+            out = f"<b>📃 Player queue:</b> \n\n‣ <b>Now playing:</b> [{chat_queue[0][0]}]({chat_queue[0][2]}) | `{chat_queue[0][4]}` \n"
             l = len(chat_queue)
             for x in range(1, l):
                 title = chat_queue[x][0]
                 link = chat_queue[x][2]
                 type = chat_queue[x][4]
-                out = out + "\n" + f"<b>#️⃣ {x}</b> - [{title}]({link}) | `{type}` \n"
+                out = out + "\n" + f"<b>♯ {x}</b> - [{title}]({link}) | `{type}` \n"
             await message.reply_text(out, disable_web_page_preview=True)
     else:
         await message.reply_text("❗Nothing is playing.")
@@ -422,12 +422,12 @@ async def end(_, message):
     if chat_id in LIVE_CHATS:
         await app.leave_group_call(chat_id)
         LIVE_CHATS.remove(chat_id)
-        return await message.reply_text("⏹ Stopped streaming.")
+        return await message.reply_text("≠ Stopped streaming.")
         
     if chat_id in QUEUE:
         await app.leave_group_call(chat_id)
         clear_queue(chat_id)
-        await message.reply_text("⏹ Stopped streaming.")
+        await message.reply_text("≠ Stopped streaming.")
     else:
         await message.reply_text("❗Nothing is playing.")
         
@@ -440,7 +440,7 @@ async def pause(_, message):
     if chat_id in QUEUE:
         try:
             await app.pause_stream(chat_id)
-            await message.reply_text("⏸ Paused streaming.")
+            await message.reply_text("‣ Paused streaming.")
         except:
             await message.reply_text("❗Nothing is playing.")
     else:
@@ -455,7 +455,7 @@ async def resume(_, message):
     if chat_id in QUEUE:
         try:
             await app.resume_stream(chat_id)
-            await message.reply_text("⏸ Resumed streaming.")
+            await message.reply_text("⏯ Resumed streaming.")
         except:
             await message.reply_text("❗Nothing is playing.")
     else:
